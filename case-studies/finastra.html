@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en" data-accent="blue">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Case study: How Adi Geva translated PSD2 and UK Open Banking regulations into a scalable enterprise API platform at Finastra — from regulatory analysis to bank enablement at scale.">
+  <title>CS 04 — Finastra Open Banking · Adi Geva</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,500;0,700;1,300;1,500&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<header>
+  <nav aria-label="Main navigation">
+    <a class="nav-brand" href="../index.html">
+      <div class="nav-avatar" aria-hidden="true">AG</div>
+      <div><div class="nav-name">Adi Geva</div><div class="nav-role">Senior Product Manager</div></div>
+    </a>
+    <a href="../index.html" class="nav-back">← All case studies</a>
+  </nav>
+</header>
+
+<main id="main-content">
+
+  <section class="cs-hero" aria-label="Case study overview">
+    <div class="cs-hero-inner">
+      <div class="cs-crumb">Case Study 04 of 04 · Finastra</div>
+      <h1 class="cs-hero-title">Building the Open Banking<br>Platform from Scratch</h1>
+      <p class="cs-hero-sub">How I translated PSD2 and UK Open Banking regulations into a scalable enterprise API platform — leading product from regulatory analysis through bank enablement, delivered on deadline with zero compliance violations.</p>
+      <div class="cs-hero-meta">
+        <span class="meta-chip"><strong>Company:</strong> Finastra (formerly FundTech)</span>
+        <span class="meta-chip"><strong>Period:</strong> 2017–2021</span>
+        <span class="meta-chip"><strong>Role:</strong> Senior Product Owner</span>
+        <span class="meta-chip"><strong>Domain:</strong> Open Banking · PSD2 · Enterprise B2B · OpenAPI</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="kpi-bar" aria-label="Key results">
+    <div class="kpi-bar-inner">
+      <div class="kpi-item"><span class="kpi-num">100%</span><div class="kpi-label">PSD2 compliance delivered on deadline</div></div>
+      <div class="kpi-divider" aria-hidden="true"></div>
+      <div class="kpi-item"><span class="kpi-num">Zero</span><div class="kpi-label">Regulatory violations across platform life</div></div>
+      <div class="kpi-divider" aria-hidden="true"></div>
+      <div class="kpi-item"><span class="kpi-num">Multi</span><div class="kpi-label">Enterprise banks enabled on platform</div></div>
+      <div class="kpi-divider" aria-hidden="true"></div>
+      <div class="kpi-item"><span class="kpi-num">4 yrs</span><div class="kpi-label">Platform product ownership</div></div>
+    </div>
+  </div>
+
+  <div class="cs-body">
+
+    <div class="cs-sec reveal">
+      <div class="sec-label">Background &amp; Context</div>
+      <h2 class="sec-title">A regulatory mandate with no playbook</h2>
+      <p class="sec-text">The EU's PSD2 directive and UK Open Banking standards mandated that banks expose their payment and account data through secure, standardized APIs by hard regulatory deadlines. Non-compliance meant significant fines. The problem: most banks had no internal API infrastructure, no Open Banking expertise, and no clear path to compliance.</p>
+      <p class="sec-text" style="margin-top:.75rem">Finastra's opportunity was to build the platform that banks could adopt to meet these mandates — turning a regulatory burden into a product. As Senior Product Owner, I led the platform from conception to enterprise bank enablement over four years.</p>
+      <p class="sec-text" style="margin-top:.75rem">This was a fundamentally different kind of product challenge: the customer was enterprises (banks), the user was third-party providers (TPPs) consuming the APIs, and the regulator was setting the requirements. Balancing all three simultaneously was the central challenge of the role.</p>
+    </div>
+
+    <div class="two-col reveal">
+      <div class="cs-sec">
+        <div class="sec-label">Customer Pain Points</div>
+        <h2 class="sec-title">What banks needed</h2>
+        <ul class="pain-list">
+          <li class="pain-item"><span class="pain-icon">⚖️</span>Regulatory deadlines with severe fines for non-compliance — extreme time pressure</li>
+          <li class="pain-item"><span class="pain-icon">🔧</span>No internal API expertise — banks needed a solution their teams could implement</li>
+          <li class="pain-item"><span class="pain-icon">🔒</span>Complex security requirements: OAuth 2.0, TLS mutual auth, consent management — all mandatory</li>
+          <li class="pain-item"><span class="pain-icon">📋</span>Standards varied across jurisdictions — UK FCA, EU EBA, individual country interpretations</li>
+          <li class="pain-item"><span class="pain-icon">📈</span>Scalability for growing TPP ecosystem — platform needed to handle volume as adoption grew</li>
+          <li class="pain-item"><span class="pain-icon">🔄</span>Ongoing regulatory evolution — standards updated as regulators clarified guidance post-mandate</li>
+        </ul>
+      </div>
+      <div class="cs-sec">
+        <div class="sec-label">Regulatory Context</div>
+        <h2 class="sec-title">The regulatory landscape</h2>
+        <div class="reg-timeline">
+          <div class="reg-item">
+            <div class="reg-date">Jan 2018</div>
+            <div class="reg-content">
+              <div class="reg-title">UK Open Banking Goes Live</div>
+              <div class="reg-desc">CMA9 (9 largest UK banks) required to expose account and payment APIs. Finastra's non-CMA customers watching closely.</div>
+            </div>
+          </div>
+          <div class="reg-item">
+            <div class="reg-date">Sep 2019</div>
+            <div class="reg-content">
+              <div class="reg-title">PSD2 Strong Auth Deadline</div>
+              <div class="reg-desc">EU-wide PSD2 SCA requirements enforced. Banks without compliant API infrastructure faced direct regulatory exposure.</div>
+            </div>
+          </div>
+          <div class="reg-item">
+            <div class="reg-date">Ongoing</div>
+            <div class="reg-content">
+              <div class="reg-title">EBA RTS Clarifications</div>
+              <div class="reg-desc">Regulatory technical standards updated iteratively. Platform had to absorb changes without disrupting live bank integrations.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cs-sec reveal">
+      <div class="sec-label">Research &amp; Discovery</div>
+      <h2 class="sec-title">Dual-track discovery: regulatory and customer</h2>
+      <div class="two-col">
+        <div>
+          <p class="sec-text">Discovery ran on two parallel tracks simultaneously — which made this role unlike any consumer product discovery I'd done before.</p>
+          <p class="sec-text" style="margin-top:.75rem"><strong style="color:var(--text)">Track 1 — Regulatory translation:</strong> Reading and parsing EBA RTS documents, FCA Open Banking standards, and bilateral country-specific guidance. Working with Legal and Compliance to translate legal language into product requirements. Attending industry working groups to get ahead of regulatory clarifications.</p>
+          <p class="sec-text" style="margin-top:.75rem"><strong style="color:var(--text)">Track 2 — Bank customer research:</strong> Working with bank technical teams and PMs to understand their integration constraints, existing infrastructure, timeline pressures, and internal stakeholder dynamics. What Finastra built had to integrate cleanly into bank core systems that were decades old.</p>
+          <div class="chips" style="margin-top:1.25rem">
+            <span class="chip">EBA / FCA Regulatory Analysis</span>
+            <span class="chip">Bank Customer Interviews</span>
+            <span class="chip">Legal &amp; Compliance Reviews</span>
+            <span class="chip">Architecture Workshops</span>
+            <span class="chip">TPP Feedback Sessions</span>
+            <span class="chip">Swagger / API Usage Analytics</span>
+            <span class="chip">Industry Working Groups</span>
+          </div>
+        </div>
+        <div class="card">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:var(--c-text);margin-bottom:1rem">Key Discovery Insights</div>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:.75rem">
+            <li style="font-size:.82rem;color:var(--text-mid);padding-left:1.2rem;position:relative;line-height:1.6"><span style="position:absolute;left:0;color:var(--c-mid)">→</span>Banks needed sandbox environments to test TPP integrations before going live — this became a critical platform requirement not in the original scope</li>
+            <li style="font-size:.82rem;color:var(--text-mid);padding-left:1.2rem;position:relative;line-height:1.6"><span style="position:absolute;left:0;color:var(--c-mid)">→</span>Swagger documentation quality was the #1 factor in TPP adoption speed — more important than API feature completeness</li>
+            <li style="font-size:.82rem;color:var(--text-mid);padding-left:1.2rem;position:relative;line-height:1.6"><span style="position:absolute;left:0;color:var(--c-mid)">→</span>Banks' internal legal teams had different interpretations of RTS requirements — Finastra needed to offer configuration, not just one fixed implementation</li>
+            <li style="font-size:.82rem;color:var(--text-mid);padding-left:1.2rem;position:relative;line-height:1.6"><span style="position:absolute;left:0;color:var(--c-mid)">→</span>Time-to-first-API-call was the activation metric that correlated most with customer satisfaction and upsell</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="cs-sec reveal">
+      <div class="sec-label">Platform KPIs</div>
+      <h2 class="sec-title">Measuring a B2B platform product</h2>
+      <p class="sec-text" style="margin-bottom:1.25rem">Platform KPIs differ fundamentally from consumer product metrics. Adoption, reliability, and developer experience matter more than individual user experience moments.</p>
+      <div class="platform-kpis">
+        <div class="pk-card">
+          <div class="pk-name">Swagger Downloads</div>
+          <div class="pk-desc">Volume of API spec downloads from banks and TPPs — leading indicator of ecosystem adoption and developer interest.</div>
+          <div class="pk-why">Why it matters: A downloaded spec is a committed integrator. Tracks market reach beyond direct customers.</div>
+        </div>
+        <div class="pk-card">
+          <div class="pk-name">API Call Volume</div>
+          <div class="pk-desc">Total API calls per period, trending up as TPPs integrate and banks go live. Proxy for ecosystem health and usage growth.</div>
+          <div class="pk-why">Why it matters: Volume growth confirms platform is delivering real value, not just compliance checkbox.</div>
+        </div>
+        <div class="pk-card">
+          <div class="pk-name">API Error Rate</div>
+          <div class="pk-desc">% of API calls returning errors — tracked against SLA thresholds. Zero tolerance for auth or consent management errors (compliance-critical).</div>
+          <div class="pk-why">Why it matters: Platform errors in production = compliance incidents for bank customers. This is a safety metric.</div>
+        </div>
+        <div class="pk-card">
+          <div class="pk-name">Bank Enablement Time</div>
+          <div class="pk-desc">Time from contract signed to first live API call in production. The activation metric for the platform — directly correlates with bank NPS and renewal intent.</div>
+          <div class="pk-why">Why it matters: Faster time-to-live means faster ROI for banks, better Finastra references, and faster market expansion.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cs-sec reveal">
+      <div class="sec-label">Stakeholder Complexity</div>
+      <h2 class="sec-title">Managing many masters at once</h2>
+      <p class="sec-text" style="margin-bottom:1.25rem">This product sat at the intersection of more stakeholder groups than any consumer product I've owned. Getting alignment across all of them simultaneously was the operational challenge that defined the role.</p>
+      <div class="stakeholder-grid">
+        <div class="sh-card"><div class="sh-icon">🏛️</div><div class="sh-name">Regulators</div><div class="sh-role">EBA, FCA — set non-negotiable requirements</div></div>
+        <div class="sh-card"><div class="sh-icon">🏦</div><div class="sh-name">Enterprise Banks</div><div class="sh-role">Customers — needed compliant, integrable APIs</div></div>
+        <div class="sh-card"><div class="sh-icon">🔗</div><div class="sh-name">TPP Partners</div><div class="sh-role">End-users of APIs — needed great DX</div></div>
+        <div class="sh-card"><div class="sh-icon">🔒</div><div class="sh-name">Security Team</div><div class="sh-role">OAuth 2.0, TLS, consent — co-designed</div></div>
+        <div class="sh-card"><div class="sh-icon">⚖️</div><div class="sh-name">Legal &amp; Compliance</div><div class="sh-role">Translated regulation → requirements</div></div>
+        <div class="sh-card"><div class="sh-icon">🏗️</div><div class="sh-name">Architecture</div><div class="sh-role">Platform design, scalability, integration</div></div>
+        <div class="sh-card"><div class="sh-icon">💼</div><div class="sh-name">Account Managers</div><div class="sh-role">Customer relationship, feature priority</div></div>
+        <div class="sh-card"><div class="sh-icon">⚙️</div><div class="sh-name">Engineering</div><div class="sh-role">Implementation, delivery, operational</div></div>
+      </div>
+    </div>
+
+    <div class="cs-sec reveal">
+      <div class="sec-label">Process</div>
+      <h2 class="sec-title">From regulation to live platform</h2>
+      <div class="process">
+        <div class="p-step"><div class="p-num">1</div><div><div class="p-step-title">Regulatory Translation (Months 1–3)</div><div class="p-step-desc">Parsed EBA RTS and FCA Open Banking standards into structured product requirements. Created a requirements traceability matrix mapping each regulatory mandate to a platform feature. Worked with Legal to resolve ambiguous interpretations — documented decisions and rationale for future regulatory reviews.</div></div></div>
+        <div class="p-step"><div class="p-num">2</div><div><div class="p-step-title">Architecture Co-design (Months 2–5)</div><div class="p-step-desc">Co-designed the platform architecture with Security and Engineering: OAuth 2.0 consent flow, TPP sandbox environment, API gateway configuration, error handling standards. Product drove the "what" while engineering shaped the "how" — weekly architecture reviews kept us aligned.</div></div></div>
+        <div class="p-step"><div class="p-num">3</div><div><div class="p-step-title">Enterprise Bank Pilot (Months 5–8)</div><div class="p-step-desc">Ran closed beta with 3 enterprise bank customers. Embedded with their integration teams to observe real onboarding friction. Gathered structured feedback across 12 integration checkpoints. Discovered that sandbox quality and Swagger documentation clarity were the highest-impact improvements we could make.</div></div></div>
+        <div class="p-step"><div class="p-num">4</div><div><div class="p-step-title">GA Launch &amp; Regulatory Deadline (Month 9)</div><div class="p-step-desc">Platform launched for general availability ahead of PSD2 regulatory deadline. All customer banks live with compliant APIs. Compliance certification support provided to each bank's regulatory team. Zero violations on launch.</div></div></div>
+        <div class="p-step"><div class="p-num">5</div><div><div class="p-step-title">Ongoing: Regulatory Evolution (Years 1–4)</div><div class="p-step-desc">As EBA clarified standards and released updated RTS guidance, maintained a regulatory change management process. Each update was evaluated for product impact, prioritized against customer urgency, and shipped as platform updates without disrupting live bank integrations.</div></div></div>
+      </div>
+    </div>
+
+    <div class="cs-sec reveal">
+      <div class="sec-label">Outcomes</div>
+      <h2 class="sec-title">What the platform delivered</h2>
+      <div class="outcomes">
+        <div class="out-card"><span class="out-num">100%</span><div class="out-label">PSD2 and UK Open Banking compliance delivered ahead of regulatory deadline</div></div>
+        <div class="out-card"><span class="out-num">Zero</span><div class="out-label">Compliance violations across the platform's full operational period (4 years)</div></div>
+        <div class="out-card"><span class="out-num">↓ Enabled</span><div class="out-label">Bank time-to-first-API-call reduced through improved onboarding and sandbox quality</div></div>
+        <div class="out-card out-wide"><span class="out-num" style="font-size:1.2rem">Regulatory complexity → scalable, configurable product</span><div class="out-label">The hardest part of this project wasn't engineering — it was taking something inherently ambiguous (regulatory text, updated quarterly by different bodies across multiple jurisdictions) and turning it into a product that was both fully compliant and genuinely easy for bank customers to adopt. The requirements traceability framework we developed became an internal standard for how Finastra manages regulated product delivery.</div></div>
+      </div>
+    </div>
+
+    <div class="cs-sec reveal">
+      <div class="sec-label">Key Learnings</div>
+      <h2 class="sec-title">What 4 years of regulated B2B product ownership taught me</h2>
+      <div class="two-col">
+        <ul class="learnings">
+          <li class="l-item">Regulatory constraints are product requirements — not obstacles. The discipline of working within hard constraints produces more creative, focused product decisions than open-ended briefs</li>
+          <li class="l-item">Enterprise B2B PMs must speak both legal and engineering. The ability to translate between them is the core skill — and the rarest one on a product team</li>
+          <li class="l-item">Developer experience is a product metric on API platforms. Swagger quality and sandbox reliability predicted TPP adoption far better than API feature completeness</li>
+          <li class="l-item">Requirements traceability isn't overhead — it's essential. In regulated products, you need to explain every product decision to auditors and legal teams. Documenting the why at the time it's made saves enormous effort later</li>
+        </ul>
+        <ul class="learnings">
+          <li class="l-item">Pilot programs with real customers find what internal testing can't. Our bank beta participants discovered integration gaps in 3 weeks that 6 months of internal QA had missed</li>
+          <li class="l-item">Platform metrics differ from consumer metrics. Reliability, adoption velocity, and time-to-activation matter more than individual user experience moments</li>
+          <li class="l-item">Regulatory ambiguity is a product design opportunity. When the regulator's guidance is unclear, the bank that offers a clear, reasonable interpretation first wins market share</li>
+          <li class="l-item">B2B PM timelines are dictated by external events (regulatory deadlines, customer contract milestones). Building buffers and being ruthless about scope is survival, not preference</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cs-sec reveal">
+      <div class="sec-label">Timeline</div>
+      <h2 class="sec-title">Four years of platform ownership</h2>
+      <div class="tl">
+        <div class="tl-phase hl"><div class="tl-phase-name">Translate</div><div class="tl-phase-dur">Months 1–3</div></div>
+        <div class="tl-phase"><div class="tl-phase-name">Architect</div><div class="tl-phase-dur">Months 2–5</div></div>
+        <div class="tl-phase hl"><div class="tl-phase-name">Beta</div><div class="tl-phase-dur">Months 5–8</div></div>
+        <div class="tl-phase"><div class="tl-phase-name">GA Launch</div><div class="tl-phase-dur">Month 9</div></div>
+        <div class="tl-phase hl"><div class="tl-phase-name">Evolve</div><div class="tl-phase-dur">Years 1–4</div></div>
+      </div>
+    </div>
+
+    <div class="cs-quote reveal">
+      <div class="cs-quote-text">"Building a regulated product taught me that constraints aren't the enemy of great product work — they're the forcing function for it. When you can't cut compliance corners, you get creative in the right places."</div>
+      <div class="cs-quote-attr">— Reflection on the Finastra Open Banking platform</div>
+    </div>
+
+  </div>
+
+</main>
+
+<nav class="cs-nav-footer" aria-label="Case study navigation">
+  <a href="etoro.html" class="cs-nav-btn">← eToro Payments</a>
+  <a href="../index.html" class="cs-nav-btn back-home">← Back to all case studies</a>
+</nav>
+
+<script src="../assets/main.js"></script>
+</body>
+</html>

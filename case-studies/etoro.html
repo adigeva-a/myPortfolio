@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en" data-accent="orange">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Case study: How Adi Geva took domain ownership of money movement at eToro, built KPI frameworks, ran payment flow experiments, and introduced AI-powered delivery.">
+  <title>CS 03 — eToro Payments · Adi Geva</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,500;0,700;1,300;1,500&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<header>
+  <nav aria-label="Main navigation">
+    <a class="nav-brand" href="../index.html">
+      <div class="nav-avatar" aria-hidden="true">AG</div>
+      <div><div class="nav-name">Adi Geva</div><div class="nav-role">Senior Product Manager</div></div>
+    </a>
+    <a href="../index.html" class="nav-back">← All case studies</a>
+  </nav>
+</header>
+
+<main id="main-content">
+
+  <section class="cs-hero" aria-label="Case study overview">
+    <div class="cs-hero-inner">
+      <div class="cs-crumb">Case Study 03 of 04 · eToro</div>
+      <h1 class="cs-hero-title">Optimizing Banking &amp;<br>Payments at eToro</h1>
+      <p class="cs-hero-sub">Taking domain ownership of money movement at a global trading platform — how I built the KPI framework, ran payment flow experiments, and introduced AI-powered spec delivery to accelerate the team.</p>
+      <div class="cs-hero-meta">
+        <span class="meta-chip"><strong>Company:</strong> eToro</span>
+        <span class="meta-chip"><strong>Period:</strong> 2024–Present</span>
+        <span class="meta-chip"><strong>Role:</strong> Senior PM, Banking &amp; Payments</span>
+        <span class="meta-chip"><strong>Domain:</strong> Payments · KPI Frameworks · AI-powered PM</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="kpi-bar" aria-label="Key results">
+    <div class="kpi-bar-inner">
+      <div class="kpi-item"><span class="kpi-num">↑</span><div class="kpi-label">Deposit completion trending up</div></div>
+      <div class="kpi-divider" aria-hidden="true"></div>
+      <div class="kpi-item"><span class="kpi-num">70%</span><div class="kpi-label">Faster PRD delivery with AI</div></div>
+      <div class="kpi-divider" aria-hidden="true"></div>
+      <div class="kpi-item"><span class="kpi-num">Global</span><div class="kpi-label">Multi-market, multi-currency scope</div></div>
+      <div class="kpi-divider" aria-hidden="true"></div>
+      <div class="kpi-item"><span class="kpi-num">AI-first</span><div class="kpi-label">Delivery methodology</div></div>
+    </div>
+  </div>
+
+  <div class="cs-body">
+
+    <div class="cs-sec reveal">
+      <div class="sec-label">Background &amp; Context</div>
+      <h2 class="sec-title">New domain, new mandate</h2>
+      <p class="sec-text">I joined eToro in 2024 as the Senior Product Manager for Banking &amp; Payments — responsible for the full money movement domain across a global trading platform serving millions of users. The domain covers deposit flows, withdrawal journeys, payment method management, and cross-border fund movements in multiple currencies and regulatory jurisdictions.</p>
+      <p class="sec-text" style="margin-top:.75rem">My mandate was clear: reduce friction in payment flows, improve completion rates, establish a robust KPI framework, and modernize how the product team ships. I came in during a period of growth, which meant both opportunity and technical debt.</p>
+    </div>
+
+    <div class="two-col reveal">
+      <div class="cs-sec">
+        <div class="sec-label">User Pain Points</div>
+        <h2 class="sec-title">What traders were struggling with</h2>
+        <ul class="pain-list">
+          <li class="pain-item"><span class="pain-icon">💸</span>Fee disclosure appearing only at final confirmation — surprising users who'd already committed to an amount</li>
+          <li class="pain-item"><span class="pain-icon">⏳</span>Withdrawal timelines not communicated — users opened support tickets asking "where's my money?"</li>
+          <li class="pain-item"><span class="pain-icon">🔐</span>Over-applied security friction — strong verification on low-risk, returning users adding unnecessary steps</li>
+          <li class="pain-item"><span class="pain-icon">📊</span>No consolidated view of in-transit funds — users couldn't track pending deposits or withdrawals</li>
+          <li class="pain-item"><span class="pain-icon">🌍</span>Payment method availability varied by market with no clear explanation to users why options were limited</li>
+        </ul>
+      </div>
+      <div class="cs-sec">
+        <div class="sec-label">Research Conducted</div>
+        <h2 class="sec-title">Building the data foundation first</h2>
+        <p class="sec-text">My first priority was establishing measurement. The domain lacked a unified KPI framework — I built one before starting any roadmap work. Once the data infrastructure was in place, I used it to run discovery.</p>
+        <div class="chips" style="margin-top:1rem">
+          <span class="chip">Mixpanel Payment Funnels</span>
+          <span class="chip">Databricks Genie (SQL)</span>
+          <span class="chip">Reforge Customer Insights</span>
+          <span class="chip">Production Monitoring</span>
+          <span class="chip">User Interviews</span>
+          <span class="chip">Incident Post-mortems</span>
+          <span class="chip">Support Ticket Analysis</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cs-sec reveal">
+      <div class="sec-label">KPI Framework</div>
+      <h2 class="sec-title">How I measure domain health</h2>
+      <p class="sec-text" style="margin-bottom:1.25rem">Building a shared metric language was the precondition for everything else. Without agreed KPIs, prioritization debates were based on opinions. With them, they're based on evidence.</p>
+      <div class="kpi-dashboard">
+        <div class="kpi-dash-card">
+          <div class="kpi-dash-icon">📈</div>
+          <div class="kpi-dash-name">Deposit Completion Rate</div>
+          <div class="kpi-dash-desc">% of users who initiate a deposit and successfully complete it. Primary north-star metric across all payment flows.</div>
+          <div class="kpi-dash-type">North Star</div>
+        </div>
+        <div class="kpi-dash-card">
+          <div class="kpi-dash-icon">⚡</div>
+          <div class="kpi-dash-name">Time to First Deposit</div>
+          <div class="kpi-dash-desc">How quickly new users complete their first successful deposit after onboarding. Strong predictor of retention and LTV.</div>
+          <div class="kpi-dash-type">Leading Indicator</div>
+        </div>
+        <div class="kpi-dash-card">
+          <div class="kpi-dash-icon">💰</div>
+          <div class="kpi-dash-name">Withdrawal Success Rate</div>
+          <div class="kpi-dash-desc">% of withdrawal requests that complete successfully without user intervention or support escalation.</div>
+          <div class="kpi-dash-type">Satisfaction Metric</div>
+        </div>
+        <div class="kpi-dash-card">
+          <div class="kpi-dash-icon">🛡️</div>
+          <div class="kpi-dash-name">Payment Error Rate</div>
+          <div class="kpi-dash-desc">Production error frequency across all payment flows. Monitored with alerting — reliability is a product KPI, not just an engineering one.</div>
+          <div class="kpi-dash-type">Health Metric</div>
+        </div>
+        <div class="kpi-dash-card">
+          <div class="kpi-dash-icon">🔄</div>
+          <div class="kpi-dash-name">Payment Method Adoption</div>
+          <div class="kpi-dash-desc">Adoption rate of preferred/lower-cost payment methods vs. high-fee alternatives. Impacts both user cost and platform economics.</div>
+          <div class="kpi-dash-type">Business Metric</div>
+        </div>
+        <div class="kpi-dash-card">
+          <div class="kpi-dash-icon">🎫</div>
+          <div class="kpi-dash-name">Payment-Related Support Rate</div>
+          <div class="kpi-dash-desc">Volume of support tickets per 1,000 payment attempts. Leading indicator of UX friction and confusion in the flow.</div>
+          <div class="kpi-dash-type">Lagging Indicator</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cs-sec reveal">
+      <div class="sec-label">Experimentation</div>
+      <h2 class="sec-title">Key experiments run on the deposit flow</h2>
+
+      <div style="margin-bottom:2rem">
+        <div style="font-size:.9rem;font-weight:600;color:var(--text);margin-bottom:.75rem">Experiment 1 — Fee transparency upfront</div>
+        <div class="ab-grid">
+          <div class="ab-card ab-control"><div class="ab-lbl">Control</div><div class="ab-card-title">Fee at confirmation</div><div class="ab-card-desc">Transaction fee shown only at the final confirmation step, after user has entered amount and selected payment method</div></div>
+          <div class="ab-card ab-variant"><div class="ab-lbl">Variant ✓</div><div class="ab-card-title">Upfront fee calculator</div><div class="ab-card-desc">Dynamic fee calculator shown inline on the amount entry step — updates in real-time as user types, shows net amount to be deposited</div></div>
+        </div>
+        <div class="ab-result">✓ Variant won: Higher deposit completion + significantly lower abandonment at confirmation step · Transparency built trust</div>
+      </div>
+
+      <div style="margin-bottom:2rem">
+        <div style="font-size:.9rem;font-weight:600;color:var(--text);margin-bottom:.75rem">Experiment 2 — Withdrawal status communication</div>
+        <div class="ab-grid">
+          <div class="ab-card ab-control"><div class="ab-lbl">Control</div><div class="ab-card-title">Generic confirmation</div><div class="ab-card-desc">"Your withdrawal has been submitted" — no timeline, no tracking, users left in the dark</div></div>
+          <div class="ab-card ab-variant"><div class="ab-lbl">Variant ✓</div><div class="ab-card-title">Estimated arrival + tracking</div><div class="ab-card-desc">"Expected in your account by [date]" + in-app status tracker showing processing stages. Email/push notification on completion.</div></div>
+        </div>
+        <div class="ab-result">✓ Variant: Withdrawal-related support tickets dropped significantly · User satisfaction on withdrawals improved measurably</div>
+      </div>
+
+      <div>
+        <div style="font-size:.9rem;font-weight:600;color:var(--text);margin-bottom:.75rem">Experiment 3 — Smart security friction (risk-based)</div>
+        <div class="ab-grid">
+          <div class="ab-card ab-control"><div class="ab-lbl">Control</div><div class="ab-card-title">Uniform verification</div><div class="ab-card-desc">Same verification step for all deposit amounts and all user segments, regardless of risk profile or account history</div></div>
+          <div class="ab-card ab-variant"><div class="ab-lbl">Variant ✓</div><div class="ab-card-title">Risk-tiered friction</div><div class="ab-card-desc">Low-risk returning users with clean history → streamlined flow. High-value new deposits or unusual patterns → full verification. Same security posture, reduced friction for majority.</div></div>
+        </div>
+        <div class="ab-result">✓ Variant: Improved deposit completion for low-risk segment with no increase in fraud or compliance incidents</div>
+      </div>
+    </div>
+
+    <div class="cs-sec reveal">
+      <div class="sec-label">AI-Powered Delivery</div>
+      <h2 class="sec-title">How I changed how the team ships</h2>
+      <p class="sec-text" style="margin-bottom:1.25rem">One of my key initiatives was introducing AI-powered workflows into the PM delivery process — reducing the time from idea to engineering-ready spec, while improving spec quality and reducing ambiguity.</p>
+      <div class="ai-steps">
+        <div class="ai-step">
+          <div class="ai-step-icon">🎥</div>
+          <div><div class="ai-step-title">Demo → Structured PRD</div><div class="ai-step-desc">Product demos and stakeholder recordings processed through AI to generate first-draft PRDs with context, requirements, and edge cases already populated.</div><div class="ai-step-tool">Tool: ChatGPT + Alloy AI · ~70% faster first draft</div></div>
+        </div>
+        <div class="ai-step">
+          <div class="ai-step-icon">💻</div>
+          <div><div class="ai-step-title">Code-Connected Spec Validation</div><div class="ai-step-desc">Used Cursor with codebase access to validate BDD specs against actual implementation — catching spec gaps before engineering kickoff, not during QA.</div><div class="ai-step-tool">Tool: Cursor · Eliminated spec-to-code gaps</div></div>
+        </div>
+        <div class="ai-step">
+          <div class="ai-step-icon">📋</div>
+          <div><div class="ai-step-title">BDD-Ready Gherkin Specs</div><div class="ai-step-desc">Every feature ships with AI-assisted Gherkin scenarios covering happy paths, edge cases, and error states — reducing QA overhead and improving test coverage.</div><div class="ai-step-tool">Tool: ChatGPT + Jira · Full BDD coverage</div></div>
+        </div>
+        <div class="ai-step">
+          <div class="ai-step-icon">📊</div>
+          <div><div class="ai-step-title">Data Exploration with AI</div><div class="ai-step-desc">Used Databricks Genie for natural-language SQL queries against payment data — dramatically speeding up ad-hoc discovery and funnel segmentation work.</div><div class="ai-step-tool">Tool: Databricks Genie · Hours → minutes for data queries</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cs-sec reveal">
+      <div class="sec-label">Process</div>
+      <h2 class="sec-title">How I own the domain end-to-end</h2>
+      <div class="process">
+        <div class="p-step"><div class="p-num">1</div><div><div class="p-step-title">Establish the measurement foundation</div><div class="p-step-desc">Built KPI dashboard covering 6 metrics before touching the roadmap. You can't improve what you don't measure — and you can't prioritize without shared signal.</div></div></div>
+        <div class="p-step"><div class="p-num">2</div><div><div class="p-step-title">Discovery: quantitative + qualitative in parallel</div><div class="p-step-desc">Mixpanel funnel analysis to identify top friction points by volume. User interviews and support mining to understand the "why" behind the numbers.</div></div></div>
+        <div class="p-step"><div class="p-num">3</div><div><div class="p-step-title">Roadmap → quarterly experiment plan</div><div class="p-step-desc">Translated discovery insights into prioritized experiment hypotheses. Each hypothesis has an expected metric impact and a test plan with success criteria defined upfront.</div></div></div>
+        <div class="p-step"><div class="p-num">4</div><div><div class="p-step-title">AI-assisted spec → BDD → Engineering</div><div class="p-step-desc">AI-generated PRD draft → PM refinement → Cursor code validation → Gherkin specs → engineering kickoff. Faster, higher quality, less back-and-forth.</div></div></div>
+        <div class="p-step"><div class="p-num">5</div><div><div class="p-step-title">Operational excellence as a product priority</div><div class="p-step-desc">Monitor production behavior weekly. Lead root-cause analysis for payment incidents. Reliability is in my KPI framework — not just the engineering team's concern.</div></div></div>
+      </div>
+    </div>
+
+    <div class="cs-sec reveal">
+      <div class="sec-label">Outcomes</div>
+      <h2 class="sec-title">Results so far</h2>
+      <div class="outcomes">
+        <div class="out-card"><span class="out-num">↑ Deposits</span><div class="out-label">Deposit completion trending upward across key markets following fee transparency and risk-tiered friction changes</div></div>
+        <div class="out-card"><span class="out-num">70%</span><div class="out-label">Faster PRD delivery using AI-powered spec workflows — from demo to engineering-ready in hours, not days</div></div>
+        <div class="out-card"><span class="out-num">↓ Tickets</span><div class="out-label">Payment-related support tickets declining following withdrawal status communication improvements</div></div>
+        <div class="out-card out-wide"><span class="out-num" style="font-size:1.2rem">A new delivery standard for the team</span><div class="out-label">AI-powered spec workflow adopted across the Banking &amp; Payments product team — reducing ambiguity in engineering handoffs and improving test coverage through BDD-first specs. The methodology is now being evaluated for broader adoption within the product org.</div></div>
+      </div>
+    </div>
+
+    <div class="cs-sec reveal">
+      <div class="sec-label">Key Learnings</div>
+      <h2 class="sec-title">What this reinforced and taught me</h2>
+      <div class="two-col">
+        <ul class="learnings">
+          <li class="l-item">Transparency beats persuasion every time. Showing fees upfront reduced abandonment — even though users were seeing the same fees, just earlier</li>
+          <li class="l-item">KPIs before roadmap. Starting with measurement seems obvious but rarely happens. Without the dashboard, the first 3 months of prioritization would have been guesswork.</li>
+          <li class="l-item">AI tools are force multipliers for PMs — spec quality goes up, delivery time goes down, and engineering alignment improves when there's less ambiguity in requirements</li>
+        </ul>
+        <ul class="learnings">
+          <li class="l-item">Payment reliability is a product metric. Treating error rates and incident frequency as product KPIs — not just ops — means they get on the roadmap</li>
+          <li class="l-item">Code-connected AI validation (Cursor) catches requirements gaps that no amount of PRD review finds. The gap between spec and code is where most engineering rework comes from</li>
+          <li class="l-item">Security friction should be risk-proportionate. Uniform verification protects you from edge cases at the cost of majority-case experience</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cs-quote reveal">
+      <div class="cs-quote-text">"In payments, trust is the product. Every time a user is surprised by a fee, confused by a status, or stopped by unnecessary friction — you're eroding something that's very hard to rebuild."</div>
+      <div class="cs-quote-attr">— Reflection on the eToro Payments domain</div>
+    </div>
+
+  </div>
+
+</main>
+
+<nav class="cs-nav-footer" aria-label="Case study navigation">
+  <a href="verification.html" class="cs-nav-btn">← Phone Verification Fix</a>
+  <a href="finastra.html" class="cs-nav-btn next">Next: Open Banking Platform →</a>
+</nav>
+
+<script src="../assets/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en" data-accent="pink">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Case study: How Adi Geva diagnosed a multi-factor failure at Payoneer's phone verification step and recovered +35% of lost completions.">
+  <title>CS 02 — Phone Verification Fix · Adi Geva</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,500;0,700;1,300;1,500&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<header>
+  <nav aria-label="Main navigation">
+    <a class="nav-brand" href="../index.html">
+      <div class="nav-avatar" aria-hidden="true">AG</div>
+      <div><div class="nav-name">Adi Geva</div><div class="nav-role">Senior Product Manager</div></div>
+    </a>
+    <a href="../index.html" class="nav-back">← All case studies</a>
+  </nav>
+</header>
+
+<main id="main-content">
+
+  <section class="cs-hero" aria-label="Case study overview">
+    <div class="cs-hero-inner">
+      <div class="cs-crumb">Case Study 02 of 04 · Payoneer</div>
+      <h1 class="cs-hero-title">Fixing the Phone<br>Verification Drop-off</h1>
+      <p class="cs-hero-sub">How I diagnosed a multi-factor failure at a critical funnel step — combining infrastructure analysis, UX research, and targeted fixes to recover +35% of lost completions.</p>
+      <div class="cs-hero-meta">
+        <span class="meta-chip"><strong>Company:</strong> Payoneer</span>
+        <span class="meta-chip"><strong>Period:</strong> 2022</span>
+        <span class="meta-chip"><strong>Type:</strong> Root-cause analysis + rapid fix</span>
+        <span class="meta-chip"><strong>Domain:</strong> Verification · Infrastructure · UX</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="kpi-bar" aria-label="Key results">
+    <div class="kpi-bar-inner">
+      <div class="kpi-item"><span class="kpi-num">+35%</span><div class="kpi-label">Verification stage completion</div></div>
+      <div class="kpi-divider" aria-hidden="true"></div>
+      <div class="kpi-item"><span class="kpi-num">↓60%</span><div class="kpi-label">"Didn't receive code" tickets</div></div>
+      <div class="kpi-divider" aria-hidden="true"></div>
+      <div class="kpi-item"><span class="kpi-num">3</span><div class="kpi-label">Markets brought to global avg</div></div>
+      <div class="kpi-divider" aria-hidden="true"></div>
+      <div class="kpi-item"><span class="kpi-num">7 wks</span><div class="kpi-label">Discovery to full rollout</div></div>
+    </div>
+  </div>
+
+  <div class="cs-body">
+
+    <div class="cs-sec reveal">
+      <div class="sec-label">Background</div>
+      <h2 class="sec-title">A signal hiding in the funnel</h2>
+      <p class="sec-text">While running routine funnel analysis on the registration flow, I spotted something unusual: the phone verification step had a dramatically higher drop-off rate than any comparable step in the funnel. This wasn't a gradual decline — it was a sharp cliff that had gone unaddressed.</p>
+      <p class="sec-text" style="margin-top:.75rem">What made it initially hard to diagnose was that the drop-off manifested the same way whether users were experiencing an SMS delivery failure, a confusing UI, or a timeout. The symptom was one thing; the root causes turned out to be three distinct, compounding problems.</p>
+    </div>
+
+    <div class="two-col reveal">
+      <div class="cs-sec">
+        <div class="sec-label">User Pain Points</div>
+        <h2 class="sec-title">What was breaking the experience</h2>
+        <ul class="pain-list">
+          <li class="pain-item"><span class="pain-icon">📵</span>SMS codes not arriving for users on specific country/carrier combinations</li>
+          <li class="pain-item"><span class="pain-icon">⏱️</span>60-second OTP expiry — too short when SMS delivery was already delayed</li>
+          <li class="pain-item"><span class="pain-icon">🔁</span>No visible "Resend code" CTA — users didn't know they could request a new one</li>
+          <li class="pain-item"><span class="pain-icon">📞</span>No alternative channel offered — voice call fallback didn't exist</li>
+          <li class="pain-item"><span class="pain-icon">😤</span>Generic error message ("Verification failed") with no recovery guidance</li>
+          <li class="pain-item"><span class="pain-icon">🌐</span>Country code selector UX caused international number entry errors</li>
+        </ul>
+      </div>
+      <div class="cs-sec">
+        <div class="sec-label">The Funnel at This Step</div>
+        <h2 class="sec-title">The cliff in the data</h2>
+        <div class="funnel">
+          <div class="f-row"><span class="f-label">Enter phone</span><div class="f-track"><div class="f-bar" data-w="100%">User enters phone number</div></div><span class="f-pct">100%</span></div>
+          <div class="f-row"><span class="f-label">Code sent</span><div class="f-track"><div class="f-bar" data-w="78%">SMS dispatched</div></div><span class="f-pct">78%</span></div>
+          <div class="f-row"><span class="f-label">Code screen</span><div class="f-track"><div class="f-bar" data-w="62%">Waiting for input</div></div><span class="f-pct">62%</span></div>
+          <div class="f-row"><span class="f-label">Verified ✓</span><div class="f-track"><div class="f-bar" data-w="41%">Verification success</div></div><span class="f-pct">41%</span></div>
+        </div>
+        <p style="margin-top:.85rem;font-size:.78rem;color:var(--text-light);font-style:italic">59% drop-off at phone verification — vs. ~18% avg at comparable steps</p>
+      </div>
+    </div>
+
+    <div class="cs-sec reveal">
+      <div class="sec-label">Root Cause Analysis</div>
+      <h2 class="sec-title">Three distinct failure modes</h2>
+      <p class="sec-text" style="margin-bottom:1.25rem">By cross-referencing Mixpanel event data with SMS delivery logs and support tickets, I isolated three independent root causes — each requiring a different type of fix.</p>
+      <div class="failure-grid">
+        <div class="failure-card">
+          <div class="failure-label">Failure Mode 01</div>
+          <div class="failure-title">Infrastructure: SMS non-delivery</div>
+          <div class="failure-desc">SMS delivery rates below 60% in 3 key markets (SE Asia, LATAM sub-regions). Root cause: SMS routing through a provider with poor carrier relationships in these regions.</div>
+          <div class="failure-impact">Impact: ~40% of drop-offs in affected markets</div>
+        </div>
+        <div class="failure-card">
+          <div class="failure-label">Failure Mode 02</div>
+          <div class="failure-title">UX: No recovery path visible</div>
+          <div class="failure-desc">Users who didn't receive a code had no obvious next step. "Resend" link existed but was below the fold and styled as secondary text. Rage clicks on the input field were the most common behavior before abandonment.</div>
+          <div class="failure-impact">Impact: ~35% of drop-offs across all markets</div>
+        </div>
+        <div class="failure-card">
+          <div class="failure-label">Failure Mode 03</div>
+          <div class="failure-title">Product: Timeout too short</div>
+          <div class="failure-desc">60-second OTP expiry created race conditions where valid codes expired before slow SMS delivery completed. Particularly acute on mobile networks with higher latency.</div>
+          <div class="failure-impact">Impact: ~25% of drop-offs, concentrated on mobile</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cs-sec reveal">
+      <div class="sec-label">Research Conducted</div>
+      <h2 class="sec-title">How I connected the dots</h2>
+      <div class="two-col">
+        <div>
+          <p class="sec-text">The investigation required connecting data from sources that had never been correlated before: Mixpanel funnel events, SMS gateway delivery logs from our infrastructure provider, FullStory session recordings, and support ticket categorizations.</p>
+          <p class="sec-text" style="margin-top:.75rem">The breakthrough came when I matched user IDs from Mixpanel abandonment events with SMS delivery failure logs — and found that in 3 countries, delivery failure preceded abandonment in over 70% of drop-off cases.</p>
+          <div class="chips" style="margin-top:1.25rem">
+            <span class="chip">Mixpanel Event Analysis</span>
+            <span class="chip">SMS Delivery Logs</span>
+            <span class="chip">FullStory Rage Clicks</span>
+            <span class="chip">Support Ticket Mining</span>
+            <span class="chip">Country Segmentation</span>
+            <span class="chip">Carrier Partner Data</span>
+            <span class="chip">Mobile vs Desktop Split</span>
+          </div>
+        </div>
+        <div class="card">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:var(--c-text);margin-bottom:1rem">Key Data Points</div>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:.75rem">
+            <li style="font-size:.82rem;color:var(--text-mid);padding-left:1.2rem;position:relative;line-height:1.6"><span style="position:absolute;left:0;color:var(--c-mid)">→</span>"Didn't receive code" was the #1 registration support complaint — 28% of all registration tickets</li>
+            <li style="font-size:.82rem;color:var(--text-mid);padding-left:1.2rem;position:relative;line-height:1.6"><span style="position:absolute;left:0;color:var(--c-mid)">→</span>FullStory showed 68% of abandoning users never clicked "Resend" — they didn't know it existed</li>
+            <li style="font-size:.82rem;color:var(--text-mid);padding-left:1.2rem;position:relative;line-height:1.6"><span style="position:absolute;left:0;color:var(--c-mid)">→</span>Mobile users had 2x higher drop-off than desktop — pointing to timeout and delivery latency</li>
+            <li style="font-size:.82rem;color:var(--text-mid);padding-left:1.2rem;position:relative;line-height:1.6"><span style="position:absolute;left:0;color:var(--c-mid)">→</span>3 markets had &lt;60% SMS delivery rate vs. 92%+ global average</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="cs-sec reveal">
+      <div class="sec-label">Experimentation</div>
+      <h2 class="sec-title">Testing the fix: smart verification fallbacks</h2>
+      <div class="ab-grid">
+        <div class="ab-card ab-control">
+          <div class="ab-lbl">Control — Original</div>
+          <div class="ab-card-title">SMS only, no fallback</div>
+          <div class="ab-card-desc">Single OTP channel. 60s expiry. Resend link hidden below fold. Generic error: "Verification failed." No voice call option.</div>
+        </div>
+        <div class="ab-card ab-variant">
+          <div class="ab-lbl">Variant — Smart Recovery ✓</div>
+          <div class="ab-card-title">Multi-path verification</div>
+          <div class="ab-card-desc">Auto-detect delivery failure → surface voice call option. OTP timeout extended to 3 mins. Resend CTA prominent + with countdown. Contextual error: "We had trouble sending to this number. Try voice verification instead."</div>
+        </div>
+      </div>
+      <div class="ab-result">✓ Variant won: +35% stage completion across all markets · +60% improvement in affected countries · 95% stat. sig. after 2 weeks</div>
+
+      <div style="margin-top:1.75rem">
+        <div style="font-size:.9rem;font-weight:600;color:var(--text);margin-bottom:.75rem">Secondary experiment — Country code selector UX</div>
+        <div class="ab-grid">
+          <div class="ab-card ab-control"><div class="ab-lbl">Control</div><div class="ab-card-title">Dropdown flag selector</div><div class="ab-card-desc">Full dropdown list of 200+ countries, no auto-detect, user must scroll and select</div></div>
+          <div class="ab-card ab-variant"><div class="ab-lbl">Variant ✓</div><div class="ab-card-title">Auto-detect + search</div><div class="ab-card-desc">Auto-detect country code from IP + search-as-you-type. Editable if incorrect. Reduces mis-entry errors.</div></div>
+        </div>
+        <div class="ab-result">✓ Additional +6% lift on phone entry step · Number entry errors reduced by 44%</div>
+      </div>
+    </div>
+
+    <div class="cs-sec reveal">
+      <div class="sec-label">Process</div>
+      <h2 class="sec-title">From signal to shipped fix in 7 weeks</h2>
+      <div class="process">
+        <div class="p-step"><div class="p-num">1</div><div><div class="p-step-title">Signal Detection (Week 1)</div><div class="p-step-desc">Mixpanel funnel review flagged abnormal drop-off at verification step. Initiated dedicated investigation — this wasn't a known issue.</div></div></div>
+        <div class="p-step"><div class="p-num">2</div><div><div class="p-step-title">Multi-source Root Cause Analysis (Week 2)</div><div class="p-step-desc">Connected Mixpanel abandonment data with SMS delivery logs. Correlated FullStory rage clicks with delivery timing data. Support ticket mining to quantify user-reported issues. Isolated 3 distinct failure modes.</div></div></div>
+        <div class="p-step"><div class="p-num">3</div><div><div class="p-step-title">Stakeholder Alignment (Week 3)</div><div class="p-step-desc">Presented findings to Engineering, Infrastructure, and SMS provider. Negotiated routing improvements for affected markets. Aligned on UX changes with Design. Legal review on voice call alternative.</div></div></div>
+        <div class="p-step"><div class="p-num">4</div><div><div class="p-step-title">BDD Specs &amp; Build (Weeks 3–5)</div><div class="p-step-desc">Wrote Gherkin acceptance criteria covering all failure modes and recovery paths. Engineering built multi-path verification flow with feature flags for safe rollout.</div></div></div>
+        <div class="p-step"><div class="p-num">5</div><div><div class="p-step-title">A/B Test &amp; Rollout (Weeks 5–7)</div><div class="p-step-desc">Ran controlled A/B test across 30% traffic split. Monitored daily. Hit significance at week 2. Full rollout completed week 7. Verified improvement sustained over 30 days.</div></div></div>
+      </div>
+    </div>
+
+    <div class="cs-sec reveal">
+      <div class="sec-label">Outcomes</div>
+      <h2 class="sec-title">What the fix delivered</h2>
+      <div class="outcomes">
+        <div class="out-card"><span class="out-num">+35%</span><div class="out-label">Overall phone verification stage completion rate</div></div>
+        <div class="out-card"><span class="out-num">↓60%</span><div class="out-label">"Didn't receive code" support tickets within 30 days of rollout</div></div>
+        <div class="out-card"><span class="out-num">3 markets</span><div class="out-label">Previously underserved regions restored to global completion benchmarks</div></div>
+        <div class="out-card out-wide"><span class="out-num" style="font-size:1.2rem">Infrastructure + UX + Product, fixed together</span><div class="out-label">This case is notable because the root cause spanned three domains — SMS routing, UX affordances, and OTP configuration — and required cross-functional coordination across Engineering, Infrastructure, Design, and Legal to resolve fully. Fixing any one in isolation would have recovered roughly a third of the drop-off.</div></div>
+      </div>
+    </div>
+
+    <div class="cs-sec reveal">
+      <div class="sec-label">Key Learnings</div>
+      <h2 class="sec-title">What this built in me</h2>
+      <div class="two-col">
+        <ul class="learnings">
+          <li class="l-item">Single-channel flows are fragile at global scale — always design channel fallbacks for critical steps</li>
+          <li class="l-item">Infrastructure failures surface as UX problems in the data. Cross-functional root cause analysis is essential to see the full picture</li>
+          <li class="l-item">Specific, actionable error messages dramatically improve recovery. "Verification failed" tells users nothing. "Try voice verification instead" gives them a path forward.</li>
+        </ul>
+        <ul class="learnings">
+          <li class="l-item">Support tickets are a leading indicator for funnel problems — mining them early would have caught this months sooner</li>
+          <li class="l-item">Segmenting by market and device type before diagnosing saves weeks. The problem looked uniform from the top; it was highly concentrated when sliced properly</li>
+          <li class="l-item">Sometimes the most impactful PM work isn't a new feature — it's fixing what's quietly broken</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cs-sec reveal">
+      <div class="sec-label">Timeline</div>
+      <h2 class="sec-title">7 weeks from signal to shipped</h2>
+      <div class="tl">
+        <div class="tl-phase hl"><div class="tl-phase-name">Detect</div><div class="tl-phase-dur">Week 1</div></div>
+        <div class="tl-phase hl"><div class="tl-phase-name">Root Cause</div><div class="tl-phase-dur">Week 2</div></div>
+        <div class="tl-phase"><div class="tl-phase-name">Align</div><div class="tl-phase-dur">Week 3</div></div>
+        <div class="tl-phase"><div class="tl-phase-name">Build</div><div class="tl-phase-dur">Weeks 3–5</div></div>
+        <div class="tl-phase hl"><div class="tl-phase-name">A/B &amp; Win</div><div class="tl-phase-dur">Weeks 5–7</div></div>
+      </div>
+    </div>
+
+    <div class="cs-quote reveal">
+      <div class="cs-quote-text">"Sometimes the most valuable PM work isn't launching something new — it's being the person who stops, looks at the data carefully, and fixes what's quietly costing you thousands of users every week."</div>
+      <div class="cs-quote-attr">— Reflection on the Phone Verification Project</div>
+    </div>
+
+  </div>
+
+</main>
+
+<nav class="cs-nav-footer" aria-label="Case study navigation">
+  <a href="payoneer-funnel.html" class="cs-nav-btn">← Payoneer Onboarding Funnel</a>
+  <a href="etoro.html" class="cs-nav-btn next">Next: eToro Payments →</a>
+</nav>
+
+<script src="../assets/main.js"></script>
+</body>
+</html>
